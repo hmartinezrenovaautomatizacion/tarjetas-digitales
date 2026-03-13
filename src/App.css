@@ -704,3 +704,38 @@ form input:disabled {
     min-width: 140px;
     display: inline-block;
 }
+
+/***********************
+************************/
+/* El nuevo contenedor para el encabezado */
+.perfil-header-box {
+    background-color: var(--primario); /* El verde de tu root */
+    padding: 2rem;
+    border-radius: 15px;
+    color: white !important; /* Forzamos texto blanco dentro del cuadro verde */
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left; /* O center, según prefieras */
+}
+
+/* Ajustamos los elementos internos para que se vean bien sobre verde */
+.perfil-header-box h1 {
+    color: white !important;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.perfil-header-box .status-text {
+    color: #e0e0e0 !important; /* Un gris muy claro para el estado */
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Ajuste del ID badge para que no se pierda sobre el verde */
+.perfil-header-box .id-badge {
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente */
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}

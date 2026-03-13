@@ -6,6 +6,7 @@ interface LoginProps {
   onLogin: (datos: any) => void;
   irARegistro: () => void;
   irADashboard: () => void;
+  irARecuperarPassword: () => void;
 }
 
 interface LoginData {
@@ -14,7 +15,7 @@ interface LoginData {
   ip_ultimo_login?: string;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin, irARegistro, irADashboard }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, irARegistro, irADashboard, irARecuperarPassword }) => {
   const [loginData, setLoginData] = useState<LoginData>({
     email: '',
     password: ''
@@ -132,6 +133,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, irARegistro, irADashboard }) => 
         <button type="button" className="btn-link" onClick={irARegistro}>
           Crear cuenta nueva
         </button>
+        <button onClick={irARecuperarPassword}>¿Olvidaste tu contraseña?</button>
       </div>
     </div>
   );

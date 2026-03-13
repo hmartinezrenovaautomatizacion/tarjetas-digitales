@@ -18,6 +18,12 @@ const MiCuenta: React.FC<MiCuentaProps> = ({ usuarioActual, onLogout, onVolver }
     telefono: (usuarioActual as any).telefono || ''
   });
 
+  const [passwordForm, setPasswordForm] = useState({
+    password_actual: '',
+    password_nuevo: '',
+    confirmar_password: ''
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -36,13 +42,35 @@ const MiCuenta: React.FC<MiCuentaProps> = ({ usuarioActual, onLogout, onVolver }
     }
   };
 
+  const handleCambiarPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordForm.password_nuevo !== passwordForm.confirmar_password) {
+      setMensaje({ tipo: 'error', texto: 'Las nuevas contraseñas no coinciden' });
+      return;
+    }
+
+    try {
+      setCargando(true);
+      await usuarioService.cambiarPassword(
+        passwordForm.password_actual, 
+        passwordForm.password_nuevo
+      );
+      setMensaje({ tipo: 'exito', texto: 'Contraseña actualizada correctamente' });
+      setPasswordForm({ password_actual: '', password_nuevo: '', confirmar_password: '' });
+    } catch (error: any) {
+      setMensaje({ tipo: 'error', texto: 'Error al cambiar contraseña' });
+    } finally {
+      setCargando(false);
+    }
+  }
+
   return (
     <div className="perfil-container">
       <button className="btn-volver" onClick={onVolver}>
         <i className="bi bi-arrow-left"></i> Volver al Dashboard
       </button>
 
-      <header className="perfil-header">
+      <header className="perfil-header-box">
         <h1>
           <i className="bi bi-person-circle"></i> Mi Perfil 
           <span className="id-badge">ID: {usuarioActual.usuarioid}</span>
@@ -122,6 +150,42 @@ const MiCuenta: React.FC<MiCuentaProps> = ({ usuarioActual, onLogout, onVolver }
               </button>
             )}
           </div>
+        </div>
+
+        <div className="perfil-section">
+          <h3><i className="bi bi-shield-lock"></i> Seguridad</h3>
+          <form onSubmit={handleCambiarPassword}>
+            <div className="input-group">
+              <label>Contraseña Actual</label>
+              <input 
+                type="password" 
+                value={passwordForm.password_actual}
+                onChange={(e) => setPasswordForm({...passwordForm, password_actual: e.target.value})}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label>Nueva Contraseña</label>
+              <input 
+                type="password" 
+                value={passwordForm.password_nuevo}
+                onChange={(e) => setPasswordForm({...passwordForm, password_nuevo: e.target.value})}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label>Confirmar Nueva</label>
+              <input 
+                type="password" 
+                value={passwordForm.confirmar_password}
+                onChange={(e) => setPasswordForm({...passwordForm, confirmar_password: e.target.value})}
+                required
+              />
+            </div>
+            <button type="submit" className="btn-finalizar" disabled={cargando}>
+              Actualizar Contraseña
+            </button>
+          </form>
         </div>
 
         <div className="perfil-section info-sistema">

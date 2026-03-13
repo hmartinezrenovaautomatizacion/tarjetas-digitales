@@ -13,6 +13,14 @@ export const usuarioService = {
   },
 
   async cambiarPassword(oldPassword: string, newPassword: string): Promise<void> {
-    await api.post('/api/usuario/cambiar-password', { oldPassword, newPassword });
+    await api.put('/api/cliente/change-password', { oldPassword, newPassword });
+  },
+
+  async solicitarRecuperacion(email: string): Promise<any> {
+    return await api.post('/api/cliente/forgot-password', { email });
+  },
+
+  async restablecerPassword(token: string, new_password: string): Promise<any> {
+    return await api.post('/api/cliente/reset-password', { token, new_password });
   }
 };

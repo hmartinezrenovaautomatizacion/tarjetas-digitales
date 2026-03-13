@@ -3,11 +3,12 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Registro from './pages/Registro';
 import MiCuenta from './pages/MiCuenta';
+import RecuperarPassword from './pages/RecuperarPassword';
 import { useAuth } from './hooks/useAuth';
 import { UsuarioData } from './types';
 import './App.css';
 
-type Vista = 'dashboard' | 'login' | 'registro' | 'cuenta';
+type Vista = 'dashboard' | 'login' | 'registro' | 'cuenta' | 'recuperarpassword';
 
 function App() {
   const [vistaActual, setVistaActual] = useState<Vista>('dashboard');
@@ -18,6 +19,7 @@ function App() {
   }
 
   const manejarLoginExitoso = (datos: UsuarioData) => {
+    localStorage.setItem('usuario', JSON.stringify(datos));
     setVistaActual('dashboard');
   };
 
@@ -56,6 +58,7 @@ function App() {
             onLogin={manejarLoginExitoso}
             irARegistro={() => setVistaActual('registro')}
             irADashboard={() => setVistaActual('dashboard')}
+            irARecuperarPassword={() => setVistaActual('recuperarpassword')}
           />
         </div>
       )}
@@ -65,6 +68,14 @@ function App() {
           <Registro
             alFinalizar={() => setVistaActual('login')}
             irALogin={() => setVistaActual('login')}
+          />
+        </div>
+      )}
+
+      {vistaActual === 'recuperarpassword' && (
+        <div className="page-container">
+          <RecuperarPassword 
+            onVolver={() => setVistaActual('login')} 
           />
         </div>
       )}
